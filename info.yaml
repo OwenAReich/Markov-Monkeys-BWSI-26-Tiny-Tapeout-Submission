@@ -1,67 +1,56 @@
-# Tiny Tapeout project information file
+yaml_version: 6
 
 project:
   title:        "Markov chain convergence engine"
   author:       "Owen Reich, Nicole Lefavour, Parsa Moinpur, Shresta Parampalli"
-  discord:      "owen_reich"                 # optional, e.g. "yourname#1234"
+  discord:      "owen_reich"
   description:  >
     Loads an N-state Markov transition matrix and initial probability
     vector over a byte-serial interface, iterates X_{k+1} = X_k * P on-chip
     until either the L-infinity change between iterations drops within a
     programmable tolerance or a max iteration count is reached, and reports
     the final state vector back over the same byte interface.
-  language:     "Verilog & System Verilog"
+  language:     "SystemVerilog"
   clock_hz:     10000000
-
-  tiles:        "2x2"               
-
+  tiles:        "2x2"
   top_module:   "tt_um_OwenAReich_markov_chain"
 
   source_files:
     - "Memory.sv"
     - "mac_unit.sv"
     - "convergence_compare.sv"
-    - "parallel_matvec_core.sv"     # only needed if you ever set USE_PARALLEL=1
+    - "parallel_matvec_core.sv"
     - "matmul_top.sv"
     - "markov_core_tt.v"
     - "tt_um_OwenAReich_markov_chain.v"
 
 pinout:
-  ui_in[0]:  "data[0]"
-  ui_in[1]:  "data[1]"
-  ui_in[2]:  "data[2]"
-  ui_in[3]:  "data[3]"
-  ui_in[4]:  "data[4]"
-  ui_in[5]:  "data[5]"
-  ui_in[6]:  "data[6]"
-  ui_in[7]:  "data[7]"
+  ui[0]:  "data[0]"
+  ui[1]:  "data[1]"
+  ui[2]:  "data[2]"
+  ui[3]:  "data[3]"
+  ui[4]:  "data[4]"
+  ui[5]:  "data[5]"
+  ui[6]:  "data[6]"
+  ui[7]:  "data[7]"
 
-  uo_out[0]: "rd_data[0]"
-  uo_out[1]: "rd_data[1]"
-  uo_out[2]: "rd_data[2]"
-  uo_out[3]: "rd_data[3]"
-  uo_out[4]: "rd_data[4]"
-  uo_out[5]: "rd_data[5]"
-  uo_out[6]: "rd_data[6]"
-  uo_out[7]: "rd_data[7]"
+  uo[0]:  "rd_data[0]"
+  uo[1]:  "rd_data[1]"
+  uo[2]:  "rd_data[2]"
+  uo[3]:  "rd_data[3]"
+  uo[4]:  "rd_data[4]"
+  uo[5]:  "rd_data[5]"
+  uo[6]:  "rd_data[6]"
+  uo[7]:  "rd_data[7]"
 
-  uio_in[0]: "ld_byte_wr (strobe)"
-  uio_in[1]: "ld_target_sel[0]"
-  uio_in[2]: "ld_target_sel[1]"
-  uio_in[3]: "start (strobe)"
-  uio_in[4]: "rd_addr_wr (strobe)"
-  uio_in[5]: "rd_byte_next (strobe)"
-  uio_in[6]: "unused"
-  uio_in[7]: "unused"
-
-  uio_out[0]: "chain_done (sticky)"
-  uio_out[1]: "converged (sticky)"
-  uio_out[2]: "0"
-  uio_out[3]: "0"
-  uio_out[4]: "0"
-  uio_out[5]: "0"
-  uio_out[6]: "0"
-  uio_out[7]: "0"
+  uio[0]: "ld_byte_wr (input strobe)"
+  uio[1]: "ld_target_sel[0] (input)"
+  uio[2]: "ld_target_sel[1] (input)"
+  uio[3]: "start (input strobe)"
+  uio[4]: "rd_addr_wr (input strobe)"
+  uio[5]: "rd_byte_next (input strobe)"
+  uio[6]: "chain_done (output, sticky)"
+  uio[7]: "converged (output, sticky)"
 
 analog_pins: 0
 uses_3v3:    false
