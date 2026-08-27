@@ -24,7 +24,7 @@ project:
     - "parallel_matvec_core.sv"     # only needed if you ever set USE_PARALLEL=1
     - "matmul_top.sv"
     - "markov_core_tt.v"
-    - "tt_um_YOURUSERNAME_markov_chain.v"
+    - "tt_um_OwenAReich_markov_chain.v"
 
 pinout:
   ui_in[0]:  "data[0]"
