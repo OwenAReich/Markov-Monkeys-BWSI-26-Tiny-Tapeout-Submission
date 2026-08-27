@@ -10,7 +10,7 @@ project:
     until either the L-infinity change between iterations drops within a
     programmable tolerance or a max iteration count is reached, and reports
     the final state vector back over the same byte interface.
-  language:     "Verilog"
+  language:     "Verilog & System Verilog"
   clock_hz:     10000000
 
   tiles:        "2x2"               
