@@ -1,45 +1,20 @@
-# Makefile
-# See https://docs.cocotb.org/en/stable/quickstart.html for more info
-
-# defaults
-SIM ?= icarus
-FST ?= -fst # Use more efficient FST format
+# test/Makefile
+SIM          ?= icarus
 TOPLEVEL_LANG ?= verilog
-SRC_DIR = $(PWD)/../src
-PROJECT_SOURCES = project.v
 
-ifneq ($(GATES),yes)
+# All RTL sources (adjust path if src/ is named differently)
+VERILOG_SOURCES += $(PWD)/../src/Memory.sv
+VERILOG_SOURCES += $(PWD)/../src/mac_unit.sv
+VERILOG_SOURCES += $(PWD)/../src/convergence_compare.sv
+VERILOG_SOURCES += $(PWD)/../src/parallel_matvec_core.sv
+VERILOG_SOURCES += $(PWD)/../src/matmul_top.sv
+VERILOG_SOURCES += $(PWD)/../src/markov_core_tt.v
+VERILOG_SOURCES += $(PWD)/../src/tt_um_OwenAReich_markov_chain.v
 
-# RTL simulation:
-SIM_BUILD				= sim_build/rtl
-VERILOG_SOURCES += $(addprefix $(SRC_DIR)/,$(PROJECT_SOURCES))
+TOPLEVEL = tt_um_OwenAReich_markov_chain
+MODULE   = test
 
-else
+# Icarus needs SystemVerilog flag for .sv files
+COMPILE_ARGS += -g2012
 
-# Gate level simulation:
-SIM_BUILD				= sim_build/gl
-COMPILE_ARGS    += -DGL_TEST
-COMPILE_ARGS    += -DFUNCTIONAL
-COMPILE_ARGS    += -DUSE_POWER_PINS
-COMPILE_ARGS    += -DSIM
-COMPILE_ARGS    += -DUNIT_DELAY=\#1
-VERILOG_SOURCES += $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_sc_hd/verilog/primitives.v
-VERILOG_SOURCES += $(PDK_ROOT)/sky130A/libs.ref/sky130_fd_sc_hd/verilog/sky130_fd_sc_hd.v
-
-# this gets copied in by the GDS action workflow
-VERILOG_SOURCES += $(PWD)/gate_level_netlist.v
-
-endif
-
-# Allow sharing configuration between design and testbench via `include`:
-COMPILE_ARGS 		+= -I$(SRC_DIR)
-
-# Include the testbench sources:
-VERILOG_SOURCES += $(PWD)/tb.v
-TOPLEVEL = tb
-
-# List test modules to run, separated by commas and without the .py suffix:
-COCOTB_TEST_MODULES = test
-
-# include cocotb's make rules to take care of the simulator setup
 include $(shell cocotb-config --makefiles)/Makefile.sim
