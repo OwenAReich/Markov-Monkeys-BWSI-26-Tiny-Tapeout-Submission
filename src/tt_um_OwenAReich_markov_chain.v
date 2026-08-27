@@ -1,7 +1,7 @@
 `default_nettype none
 `timescale 1ns/1ps
 //
-// tt_um_YOURUSERNAME_markov_chain.v
+// tt_um_OwenAReich_markov_chain.v
 //
 // Tiny Tapeout top module for the Markov-chain convergence ASIC.
 //
